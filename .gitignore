@@ -1,3 +1,6 @@
+*.bag
+output/
+
 # Prerequisites
 *.d
 
