@@ -1,7 +1,12 @@
 #!/bin/bash
 
 # Load rosbag filename.
-rosbag_name_file="/home/larry/codeGit/run_slam_batch/test_data/rosbag_names.txt"            # ChangeIt!
+rosbag_name_file="/home/larry/codeGit/run_slam_batch/test_data/rosbag_names.txt"        # ChangeIt!
+algorithm_prefix="fastlio"                                                              # ChangeIt! 
+rosbag_folder="/home/larry/codeGit/run_slam_batch/test_data/"                           # ChangeIt!
+trajectory_output_folder="/home/larry/codeGit/run_slam_batch/output/"                   # ChangeIt!
+
+
 if [[ ! -f "$rosbag_name_file" ]]; then
     echo "Error. Cannot find rosbag's names file."
     exit 1
@@ -17,15 +22,9 @@ done < "$rosbag_name_file"
 
 
 
-algorithm_prefix="fastlio"                                                              # ChangeIt! 
-rosbag_folder="/home/larry/codeGit/run_slam_batch/test_data/"                           # ChangeIt!
-trajectory_output_folder="/home/larry/codeGit/run_slam_batch/output/"                   # ChangeIt!
-
-
 echo "------------------------------------------------"
 echo "Start to process all rosbags"
 echo "------------------------------------------------"
-
 
 for bag in "${bags[@]}"; do
     full_rosbag_filename=${rosbag_folder}${bag}.bag
@@ -57,7 +56,7 @@ for bag in "${bags[@]}"; do
     # 4. wait until the rosbag finished.
     tmux wait-for signal_bagfinish
     echo "4. rosbag play done"
-
+    sleep 5         # wait some time for slam-launch finish
 
     # 5. publish that string to save trajectory into file. Using the same pane, because rosbag play is finished.
     echo "5. pub stop-string to save trajectory"
