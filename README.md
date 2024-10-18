@@ -55,7 +55,7 @@ sudo chmod 777 run_all.sh
 
 
 # create_bags_from_simulation
-从仿真数据路径，批量创建rosbag。
+从仿真数据路径，批量创建rosbag。同时拷贝gt文件。
 
 ## 使用
 修改：
