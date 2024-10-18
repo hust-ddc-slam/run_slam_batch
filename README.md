@@ -55,5 +55,19 @@ sudo chmod 777 run_all.sh
 
 
 # create_bags_from_simulation
-Create all rosbags from simulation output.
+从仿真数据路径，批量创建rosbag。
+
+## 使用
+修改：
+`simulation_data_folder`: 仿真数据的根路径  
+`rosbag_output_folder`: 所有rosbag要输出的路径
+`rosbag_name_file`: 保存了所有仿真数据名称的文件
+以及脚本中，`create_rosbag`的工作路径，和launch文件的代码行。
+
+脚本将从：`simulation_data_folder`路径下依次读取`rosbag_name_file`的每一行对应的路径，然后开始打包，输出rosbag到`rosbag_output_folder`路径，rosbag名称为`rosbag_name_file`中的名称。
+
+注意：文件中每一行的名称 = 仿真数据的文件夹名 = 输出的rosbag（不带.bag）的文件名
+
+
+
 
