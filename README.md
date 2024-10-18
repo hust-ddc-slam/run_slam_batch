@@ -1,4 +1,4 @@
-# run_slam_batch
+# run_slam_launch
 一键批量运行所有rosbag数据，并导出轨迹。
 
 ## 基本原理
@@ -52,4 +52,8 @@ sudo chmod 777 run_all.sh
 - 代码运行时，只有脚本的输出，并没有原始slam算法的输出，因此需先确保slam算法可以正确执行。  
 - 所有路径都应该存在。路径不存在时，不会输出最后结果，但脚本不会有任何提示。
 
+
+
+# create_bags_from_simulation
+Create all rosbags from simulation output.
 
