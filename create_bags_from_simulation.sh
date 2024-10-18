@@ -31,15 +31,23 @@ for bag in "${bags[@]}"; do
     # 0. start a tmux session
     tmux new-session -d -s mysession
 
+    # 1. create rosbag
     output_bag="${rosbag_output_folder}${bag}.bag"
 
     echo "-> Input folder: ${data_folder}"
     echo "-> Output file: ${output_bag}"
     tmux send-keys -t mysession "source /home/larry/chrono_ros_ws/devel/setup.bash" C-m  # source the workspace. # ChangeIt!
     tmux send-keys -t mysession "roslaunch create_rosbag create_rosbag.launch sequence:=${bag} input_folder:=${data_folder} output_file:=${output_bag}; tmux wait-for -S signal_bagfinish" C-m               # run launch.           # ChangeIt!
-
     tmux wait-for signal_bagfinish
-    echo "Done."
+
+    # 2. copy the gt and rename
+    tmux split-window -h -t mysession
+    sleep 1
+    gt_file_in="${data_folder}gt.csv"
+    gt_file_out="${rosbag_output_folder}gt_${bag}.csv"
+    echo "-> Copy ${gt_file_in} to ${gt_file_out}"
+    tmux send-keys -t mysession "cp ${gt_file_in} ${gt_file_out}" C-m
+    sleep 1
     tmux kill-session -t mysession
 done 
 
