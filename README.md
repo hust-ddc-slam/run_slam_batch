@@ -1,7 +1,13 @@
-# run_slam_launch
-一键批量运行所有rosbag数据，并导出轨迹。
+# run_slam_batch
+SLAM算法运行、比较的一些批量化处理操作。具体包括：
+1. 从chrono仿真程序的输出，打包rosbag的脚本：`create_bags_from_simulation`
+2. 运行rosbag，并运行SLAM算法，并录制导出数据的脚本：`run_slam_batch`
+3. 利用evo输出对比数据的脚本：`evo_compare`
 
-## 基本原理
+---
+
+## run_slam_batch
+### 基本原理
 使用`tmux`终端，创建一个session，先后创建多个窗口。  
 对于每一个rosbag，依次执行：
 1. 运行算法的launch文件
@@ -12,7 +18,7 @@
 6. 结束这个session，自动退出所有pane
 
 
-## 使用（算法配置者）
+### 使用（算法配置者）
 请每个人根据自己的虚拟机，配置这个运行脚本。具体如下：
 
 1. 安装tmux
@@ -44,20 +50,21 @@ sudo chmod 777 run_all.sh
 之后再修改脚本文件。
 
 
-## 使用（算法调用者）
+### 使用（算法调用者）
 调用者只需要修改所有变量即可，理论上不需要修改内部脚本。
 
 
-## 注意事项
+### 注意事项
 - 代码运行时，只有脚本的输出，并没有原始slam算法的输出，因此需先确保slam算法可以正确执行。  
 - 所有路径都应该存在。路径不存在时，不会输出最后结果，但脚本不会有任何提示。
 
 
+---
 
-# create_bags_from_simulation
+## create_bags_from_simulation
 从仿真数据路径，批量创建rosbag。同时拷贝gt文件。
 
-## 使用
+### 使用
 修改：
 `simulation_data_folder`: 仿真数据的根路径  
 `rosbag_output_folder`: 所有rosbag要输出的路径
@@ -68,6 +75,9 @@ sudo chmod 777 run_all.sh
 
 注意：文件中每一行的名称 = 仿真数据的文件夹名 = 输出的rosbag（不带.bag）的文件名
 
+
+---
+## evo_compare
 
 
 
