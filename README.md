@@ -4,8 +4,14 @@ SLAM算法运行、比较的一些批量化处理操作。具体包括：
 2. 运行rosbag，并运行SLAM算法，并录制导出数据的脚本：`run_slam_batch`
 3. 利用evo输出对比数据的脚本：`evo_compare`
 
----
 
+## 所有脚本的注意事项：
+- 使用了tmux终端，所有显示都是后台的，因此运行时看不到所有算法的输出。所以，首先确保单条指令能够正常运行，再测试脚本；
+- 注意输入输出文件名、路径是否正确，不正确也不会有任何报错，脚本中没有检查机制；
+- tmux启动时会创建名为：mysession的一个session，未正确运行停止脚本时不会关闭这个session，再次启动时会报错 duplicated session。因此如果是Ctrl+C或关闭的terminal时，在任意终端手动执行："tmux kill-session -t mysession"
+
+
+---
 ## run_slam_batch
 ### 基本原理
 使用`tmux`终端，创建一个session，先后创建多个窗口。  
