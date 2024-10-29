@@ -7,9 +7,18 @@ SLAM算法运行、比较的一些批量化处理操作。具体包括：
 
 ## 所有脚本的注意事项：
 - 使用了tmux终端，所有显示都是后台的，因此运行时看不到所有算法的输出。所以，首先确保单条指令能够正常运行，再测试脚本；
-- 注意输入输出文件名、路径是否正确，不正确也不会有任何报错，脚本中没有检查机制；
-- tmux启动时会创建名为：mysession的一个session，未正确运行停止脚本时不会关闭这个session，再次启动时会报错 duplicated session。因此如果是Ctrl+C或关闭的terminal时，在任意终端手动执行："tmux kill-session -t mysession"
+- 注意输入输出文件名、路径是否正确，不正确也不会有任何报错，脚本中没有检查机制；路径需要以`/`结尾，文件名需包含`.txt`这种后缀；
+- tmux启动时会创建名为：mysession的一个session，未正确运行停止脚本时不会关闭这个session，再次启动时会报错 duplicated session。因此如果是Ctrl+C或关闭的terminal时，在任意终端手动执行："tmux kill-session -t mysession"；
+- 所有sequence在`name.txt`文件（可能后面会改名称）中进行存储。该文件中每一行的名称 = 仿真数据的文件夹名 = 输出的rosbag（不带.bag）的文件名 = 轨迹对比时文件名的{seq}字段，所有的仿真打包、算法运行、输出结果、evo对比等，均依赖此文件中的文件名索引。该文件若在windows下创建，可能由于编码方式不同，在ubuntu下出现读取错误。为避免此错误，可以在ubuntu中创建新的文档并将粘贴原文本，并替换。
 
+脚本运行方法：
+```bash
+# {xxx}表示具体的某个脚本
+# 1. 给执行权限
+sudo chmod 777 {xxx}.sh
+# 2. 运行指令。在脚本所在的路径下，执行以下内容。注意，这里不可以给sudo权限，否则ros可能会有问题
+./{xxx}.sh
+```
 
 ---
 ## run_slam_batch
@@ -66,7 +75,6 @@ sudo chmod 777 run_all.sh
 
 
 ---
-
 ## create_bags_from_simulation
 从仿真数据路径，批量创建rosbag。同时拷贝gt文件。
 
@@ -77,13 +85,38 @@ sudo chmod 777 run_all.sh
 `rosbag_name_file`: 保存了所有仿真数据名称的文件
 以及脚本中，`create_rosbag`的工作路径，和launch文件的代码行。
 
+### 基本原理
 脚本将从：`simulation_data_folder`路径下依次读取`rosbag_name_file`的每一行对应的路径，然后开始打包，输出rosbag到`rosbag_output_folder`路径，rosbag名称为`rosbag_name_file`中的名称。
-
-注意：文件中每一行的名称 = 仿真数据的文件夹名 = 输出的rosbag（不带.bag）的文件名
-
 
 ---
 ## evo_compare
+### 使用：
+
+0. 需要安装evo工具：[https://github.com/MichaelGrupp/evo](https://github.com/MichaelGrupp/evo)
+如果采用虚拟环境运行，首先需要激活虚拟环境，再运行脚本。
+
+1. 修改：  
+`rosbag_name_file`: 所有sequence的文件名文件  
+`trajectory_folder`: 真实轨迹和待评估算法的轨迹，所在的文件路径  
+`slam_file`中的fastlio改成不同的算法，例如plio, liom等  
+
+2. 运行后，将在路径下生成两类文件：`res-{method}_{seq}.zip`和`res-{method}_{seq}.csv`。  
+`{method}`为对比算法，例如fastlio，plio, lim  
+`{seq}`为`rosbag_name_file`的序列名称  
+`.zip`文件为中间数据，暂时用不到，`.csv`文件是具体数值。
+
+3. 接下来，使用matlab代码，批量载入所有`res-{method}_{seq}.csv`结果，然后进行处理即可。该处理代码暂未实现，后续会添加到本repo当中。
+
+
+### 基本原理
+由于`evo_ape`每次只能对比gt和一个算法，因此批量执行每次运行，  
+将输出结果首先存到zip文件，再通过`evo_res`指令将zip文件的结果输出到表格csv文件。
+
+---
+# Issue
+目前该脚本处理还存在如下问题，后续需要完善：  
+- `evo_compare`轨迹比较时，offset等参数还未加入。可能需要在打包时写入绝对时间戳，避免当前相对时间戳的offset问题。
+
 
 
 
