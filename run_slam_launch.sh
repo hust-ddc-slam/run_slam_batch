@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Load rosbag filename.
-rosbag_name_file="/media/larry/M2-SSD/data/bag/differentA_1/name.txt"        # ChangeIt!
+rosbag_name_file="/media/larry/M2-SSD/data/raw/differentA_1/name.txt"        # ChangeIt!
 
 algorithm_prefix="fastlio"                                                              # ChangeIt! 
-rosbag_folder="/media/larry/M2-SSD/data/bag/differentA_1/"                           # ChangeIt!
-trajectory_output_folder="/media/larry/M2-SSD/data/bag/differentA_1/output/"                   # ChangeIt!
+rosbag_folder="/media/larry/M2-SSD/data/raw/differentA_1/bag/"                           # ChangeIt!
+trajectory_output_folder="/media/larry/M2-SSD/data/raw/differentA_1/bag/output/"                   # ChangeIt!
 
 
 if [[ ! -f "$rosbag_name_file" ]]; then

@@ -20,7 +20,7 @@ while IFS= read -r line; do
 done < "$rosbag_name_file"
 
 
-echo "------------------------------------------------"
+echo "--------------------  ----------------------------"
 echo "Start to create all rosbags"
 echo "------------------------------------------------"
 
@@ -44,10 +44,10 @@ for bag in "${bags[@]}"; do
     tmux split-window -h -t mysession
     sleep 1
     gt_file_in="${data_folder}gt.csv"
-    gt_file_out="${rosbag_output_folder}gt_${bag}.csv"
+    gt_file_out="${rosbag_output_folder}gt_${bag}.txt"
     echo "-> Copy ${gt_file_in} to ${gt_file_out}"
     tmux send-keys -t mysession "cp ${gt_file_in} ${gt_file_out}" C-m
-    sleep 1
+    sleep 0.1
     tmux kill-session -t mysession
 done 
 
