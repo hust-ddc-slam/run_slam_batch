@@ -34,7 +34,7 @@ for bag in "${bags[@]}"; do
 
 
     result_file="${trajectory_folder}res-fastlio_${bag}.zip"
-    evo_ape tum ${gt_file} ${slam_file} -a --t_max_diff=1 --save_result ${result_file}
+    evo_ape tum ${gt_file} ${slam_file} -a --t_max_diff=1 --t_offset 0.5 --save_result ${result_file}
     echo "-->saved result to: ${result_file}"
 
     table_file="${trajectory_folder}res-fastlio_${bag}.csv"

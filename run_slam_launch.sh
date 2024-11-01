@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Load rosbag filename.
-rosbag_name_file="/media/larry/M2-SSD/data/raw/differentA_1/name.txt"        # ChangeIt!
+rosbag_name_file="/home/larry/QSQ_Share/NewSequence/name.txt"        # ChangeIt!
 
 algorithm_prefix="fastlio"                                                              # ChangeIt! 
-rosbag_folder="/media/larry/M2-SSD/data/raw/differentA_1/bag/"                           # ChangeIt!
-trajectory_output_folder="/media/larry/M2-SSD/data/raw/differentA_1/bag/output/"                   # ChangeIt!
+rosbag_folder="/home/larry/QSQ_Share/NewSequence/output/"                           # ChangeIt!
+trajectory_output_folder="/home/larry/QSQ_Share/NewSequence/output/"                   # ChangeIt!
 
 
 if [[ ! -f "$rosbag_name_file" ]]; then
@@ -53,7 +53,7 @@ for bag in "${bags[@]}"; do
     echo "3. Create a new pane and run rosbag"
     tmux split-window -h -t mysession
     echo "    Rosbag: ${full_rosbag_filename}"
-    # tmux send-keys -t mysession "rosbag play ${full_rosbag_filename}; tmux wait-for -S signal_bagfinish" C-m      # ChangeIt!
+    
     tmux send-keys -t mysession "rosbag play ${full_rosbag_filename}; tmux wait-for -S signal_bagfinish" C-m      # ChangeIt!
 
 
