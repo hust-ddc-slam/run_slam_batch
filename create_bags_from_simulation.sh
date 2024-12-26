@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # give simulation folder, and file index
-simulation_data_folder="/home/larry/QSQ_Share/NewSequence/"         # ChangeIt!
-rosbag_output_folder="/home/larry/QSQ_Share/NewSequence/output/"    # ChangeIt!
-rosbag_name_file="/home/larry/QSQ_Share/NewSequence/name.txt"       # ChangeIt!
+simulation_data_folder="/media/larry/M2-SSD/ChronoOutput-1226/"         # ChangeIt!
+rosbag_output_folder="/media/larry/M2-SSD/rosbag_output/"    # ChangeIt!
+rosbag_name_file="/home/larry/codeGit/run_slam_batch/names.txt"       # ChangeIt!
 
 
 if [[ ! -f "$rosbag_name_file" ]]; then
@@ -24,9 +24,10 @@ echo "--------------------  ----------------------------"
 echo "Start to create all rosbags"
 echo "------------------------------------------------"
 
+count=0
 for bag in "${bags[@]}"; do
     data_folder="${simulation_data_folder}${bag}/"
-    echo "==> Process: ${data_folder}"
+    echo "==> No. ${count}, Process: ${data_folder}"
     
     # 0. start a tmux session
     tmux new-session -d -s mysession
@@ -39,12 +40,16 @@ for bag in "${bags[@]}"; do
     echo "-> Output file: ${output_bag}"
     tmux send-keys -t mysession "source /home/larry/chrono_ros_ws/devel/setup.bash" C-m  # source the workspace. # ChangeIt!
     
+    safe_bag_name="${bag//./_}"
     tmux send-keys -t mysession "roslaunch create_rosbag create_rosbag.launch \
         sequence:=${bag} input_folder:=${data_folder} output_file:=${output_bag} output_gt:=${gt_file_out}; \
         tmux wait-for -S signal_bagfinish" C-m               # run roslaunch (This is one command, do not add any space after \).    # ChangeIt! 
+    
+    # sequence:=${bag} input_folder:=${data_folder} output_file:=${output_bag} output_gt:=${gt_file_out} node_name:=node_$count; \
 
     tmux wait-for signal_bagfinish
     echo "Done"
+    count=$((count+1))
 
     # # 2. copy the gt and rename
     # TODO: removed, because the current `create_rosbag` node generate with rostime now.
