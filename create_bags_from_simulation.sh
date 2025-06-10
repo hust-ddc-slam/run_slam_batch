@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # give simulation folder, and file index
-simulation_data_folder="/media/larry/M2-SSD/ChronoOutput-1226/"         # ChangeIt!
-rosbag_output_folder="/media/larry/M2-SSD/rosbag_output/"    # ChangeIt!
-rosbag_name_file="/home/larry/codeGit/run_slam_batch/names.txt"       # ChangeIt!
+simulation_data_folder="/home/larry/data/chrono/map_0123/"         # ChangeIt!
+rosbag_output_folder="/home/larry/data/chrono/map_0123_bag/"    # ChangeIt!
+rosbag_name_file="/home/larry/codeGit/run_slam_batch/name-key7.txt"       # ChangeIt!
 
 
 if [[ ! -f "$rosbag_name_file" ]]; then
@@ -42,11 +42,9 @@ for bag in "${bags[@]}"; do
     
     safe_bag_name="${bag//./_}"
     tmux send-keys -t mysession "roslaunch create_rosbag create_rosbag.launch \
-        sequence:=${bag} input_folder:=${data_folder} output_file:=${output_bag} output_gt:=${gt_file_out}; \
-        tmux wait-for -S signal_bagfinish" C-m               # run roslaunch (This is one command, do not add any space after \).    # ChangeIt! 
+        sequence:=${bag} input_folder:=${data_folder} output_bag:=${output_bag} output_gt:=${gt_file_out}; \
+        tmux wait-for -S signal_bagfinish" C-m
     
-    # sequence:=${bag} input_folder:=${data_folder} output_file:=${output_bag} output_gt:=${gt_file_out} node_name:=node_$count; \
-
     tmux wait-for signal_bagfinish
     echo "Done"
     count=$((count+1))

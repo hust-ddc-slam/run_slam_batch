@@ -1,11 +1,10 @@
 #!/bin/bash
 
 # Load rosbag filename.
-rosbag_name_file="/home/larry/QSQ_Share/NewSequence/name.txt"        # ChangeIt!
-
+rosbag_name_file="/media/larry/M2-SSD/fast-dataset/name.txt"        # ChangeIt!
 algorithm_prefix="fastlio"                                                              # ChangeIt! 
-rosbag_folder="/home/larry/QSQ_Share/NewSequence/output/"                           # ChangeIt!
-trajectory_output_folder="/home/larry/QSQ_Share/NewSequence/output/"                   # ChangeIt!
+rosbag_folder="/media/larry/M2-SSD/fast-dataset/"                           # ChangeIt!
+trajectory_output_folder="/media/larry/M2-SSD/fast-dataset/fastlio_output/"                   # ChangeIt!
 
 
 if [[ ! -f "$rosbag_name_file" ]]; then
@@ -36,8 +35,8 @@ for bag in "${bags[@]}"; do
 
     # 1. run slam. In pane 0.1
     echo "1. run the slam launch"
-    tmux send-keys -t mysession "source /home/larry/fastlio_uncertainty_ws/devel/setup.bash" C-m  # source the workspace. # ChangeIt!
-    tmux send-keys -t mysession "roslaunch fast_lio my_ouster.launch" C-m               # run launch.           # ChangeIt!
+    tmux send-keys -t mysession "source /home/larry/fastlio_ws/devel/setup.bash" C-m  # source the workspace. # ChangeIt!
+    tmux send-keys -t mysession "roslaunch fast_lio mapping_mid360.launch" C-m               # run launch.           # ChangeIt!
 
     # 2. create pane 0.2, to run trajectory_saver
     trajectory_save_filename=${algorithm_prefix}_${bag}
@@ -46,6 +45,7 @@ for bag in "${bags[@]}"; do
     tmux split-window -h -t mysession
     tmux send-keys -t mysession "source ~/fastlio_uncertainty_ws/devel/setup.bash" C-m  # source the trajector_saver    # ChangeIt!
     tmux send-keys -t mysession "roslaunch trajectory_saver save_trajectory.launch method:=$trajectory_save_filename output_folder:=$trajectory_output_folder" C-m
+
     echo "    Output trajectory into: ${trajectory_output_folder}${trajectory_save_filename}.txt"
     
     
@@ -54,7 +54,7 @@ for bag in "${bags[@]}"; do
     tmux split-window -h -t mysession
     echo "    Rosbag: ${full_rosbag_filename}"
     
-    tmux send-keys -t mysession "rosbag play ${full_rosbag_filename}; tmux wait-for -S signal_bagfinish" C-m      # ChangeIt!
+    tmux send-keys -t mysession "rosbag play ${full_rosbag_filename} -r 1; tmux wait-for -S signal_bagfinish" C-m      # ChangeIt!
 
 
     # 4. wait until the rosbag finished.

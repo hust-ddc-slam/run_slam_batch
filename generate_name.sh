@@ -2,9 +2,10 @@
 #!/bin/bash
 
 # Define the folder and output file
-folder="/media/larry/M2-SSD/ChronoOutput-1226"
-output_file="names.txt"
+folder="/home/larry/data/3dof_street_0423"
+output_file="name.txt"
 
+# From folder.
 # Check if the folder exists
 if [ -d "$folder" ]; then
     # List all files and directories in the folder and output to names.txt
