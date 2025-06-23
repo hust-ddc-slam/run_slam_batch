@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Load rosbag filename.
-rosbag_name_file="/media/larry/M2-SSD/fast-dataset/name.txt"        # ChangeIt!
+rosbag_name_file="/media/larry/Ventoy/0613_new/name.txt"        # ChangeIt!
 algorithm_prefix="fastlio"                                                              # ChangeIt! 
-rosbag_folder="/media/larry/M2-SSD/fast-dataset/"                           # ChangeIt!
-trajectory_output_folder="/media/larry/M2-SSD/fast-dataset/fastlio_output/"                   # ChangeIt!
+rosbag_folder="/media/larry/Ventoy/0613_new/"                           # ChangeIt!
+trajectory_output_folder="/media/larry/Ventoy/0613_new/fastlio_output/"                   # ChangeIt!
 
 
 if [[ ! -f "$rosbag_name_file" ]]; then
@@ -54,7 +54,7 @@ for bag in "${bags[@]}"; do
     tmux split-window -h -t mysession
     echo "    Rosbag: ${full_rosbag_filename}"
     
-    tmux send-keys -t mysession "rosbag play ${full_rosbag_filename} -r 1; tmux wait-for -S signal_bagfinish" C-m      # ChangeIt!
+    tmux send-keys -t mysession "rosbag play ${full_rosbag_filename} -r 2; tmux wait-for -S signal_bagfinish" C-m      # ChangeIt!
 
 
     # 4. wait until the rosbag finished.

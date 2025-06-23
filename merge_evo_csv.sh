@@ -3,9 +3,9 @@
 # merge all csv file (evo's ouptut) in folder into one csv.
 
 # Output file
-output="merged.csv"
+output="/media/larry/M2-SSD/Trajectory/all/merge_rpe.csv"
 
-folder="/media/larry/M2-SSD/fast-dataset/traj_output"
+folder="/media/larry/M2-SSD/Trajectory/all/raw_rpe/"
 
 
 # Check if folder exists
